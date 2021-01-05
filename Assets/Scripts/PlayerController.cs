@@ -12,6 +12,9 @@ public class PlayerController : MonoBehaviour
     private int score = 0;
     public int health = 5;
     public Text scoreText;
+    public Text healthText;
+    public Text winLoseText;
+    public GameObject winLoseBG;
 
     // Start is called before the first frame update
     void Start()
@@ -30,10 +33,15 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         SetScoreText();
+        SetHealthText();
         if (health == 0)
         {
-            Debug.Log("Game Over!");
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            // Debug.Log("Game Over!");
+            winLoseBG.SetActive(true);
+            winLoseBG.GetComponent<Image>().color = Color.red;
+            winLoseText.color = Color.white;
+            winLoseText.text = "Game Over!";
+            StartCoroutine(LoadScene(3));
         }
     }
 
@@ -50,12 +58,17 @@ public class PlayerController : MonoBehaviour
         if (other.tag == "Trap")
         {
             health--;
-            string strHealth = "Health: " + health;
-            Debug.Log(strHealth);
+            // string strHealth = "Health: " + health;
+            // Debug.Log(strHealth);
         }
         if (other.tag == "Goal")
         {
-            Debug.Log("You win!");
+            // Debug.Log("You win!");
+            winLoseBG.SetActive(true);
+            winLoseBG.GetComponent<Image>().color = Color.green;
+            winLoseText.color = Color.black;
+            winLoseText.text = "You Win!";
+            StartCoroutine(LoadScene(3));
         }
     }
 
@@ -63,5 +76,18 @@ public class PlayerController : MonoBehaviour
     void SetScoreText()
     {
         scoreText.text = "Score: " + score;
+    }
+
+    // health text
+    void SetHealthText()
+    {
+        healthText.text = "Health: " + health;
+    }
+
+    // wait function
+    IEnumerator LoadScene(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
