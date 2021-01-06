@@ -43,6 +43,12 @@ public class PlayerController : MonoBehaviour
             winLoseText.text = "Game Over!";
             StartCoroutine(LoadScene(3));
         }
+
+        // Open menu with esc
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneManager.LoadScene(0);
+        }
     }
 
     // scoring
